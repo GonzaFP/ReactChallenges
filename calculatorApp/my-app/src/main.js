@@ -3,124 +3,137 @@ import ButtonData from './content'
 
 
 /* 
- !component that handles state
+!component that handles state
 */
-
-let numbers=[]
 let prevAnswers = []
 const data = [
- [7,8,9,'/'],
- [4,5,6,'*'],
- [1,2,3, '-'],
- ['C',0,'=','+']
+  ['7','8','9','/'],
+  ['4','5','6','*'],
+  ['1','2','3', '-'],
+  ['C','0','=','+']
 ]
 
 class MainContent extends React.Component{
   constructor(){
     super()
     this.state={
-      input:0,
+      currentNumber:'0',
+      isInitial:true,
+      previousNumber:'',
+      operator:'',
       index:0
     }
   }
 
 /* 
- !if a number is clicked, join numbers array & and set state to joined expression
- !if C is clicked, clear numbers array & set state to 0
- !if = is clicked, get items from storage, join it, evalualte it, set state to answer
- !empty numbers array, push answer to numbers array and store answer in previous answers.
+  if a number is clicked, update state.
+  if C is clicked, set state to 0
+  if an operator is clicked, update state
+  if = is clicked, join values in state and evalualte, set state to answer and store answer in previous answers.
 */
 
 handleClick = (num)=>{
- if (num !== 'C' && num !== '='){
-  numbers.push(num)
-   localStorage.setItem('number', JSON.stringify(numbers)) 
- }
- if(num === 'C'){
-  numbers=[]
-  this.setState({
-   input: 0
+    if (isNaN(num) && num !== 'C' && num !== '='){
+      this.setState(function(prevState){
+        return{
+          previousNumber: prevState.currentNumber,
+          operator:num,
+          isInitial:true
+        }
+      })
+  }
+    if(num === 'C'){
+    this.setState({
+      currentNumber: '0',
+      isInitial:true
   })
- }else if (typeof num == 'number'){
-  let displayedNumber = numbers.join('')
-   this.setState(
-    {
-     input:displayedNumber
-     }
-   )
- }else if (num=== '='){
-  let expression = JSON.parse(localStorage.getItem('number'))
-  let joinedExpression = expression.join('')
-  let answer = eval(joinedExpression)
-  numbers = []
-  numbers.push(answer)
-  prevAnswers.push(answer)
-  this.setState({
-   input:answer
-  })
- }
-}
-
+  }
+    else if (!isNaN(num)){
+      if (this.state.isInitial){
+        this.setState(
+          {
+          currentNumber: num,
+          isInitial:false
+        }
+      )
+    }
+    else {
+      this.setState(function(prevState){
+          return{
+            currentNumber:prevState.currentNumber + num
+        }              
+        })
+      }
+  }
+    else if (num=== '='){
+      let expression = this.state.previousNumber + this.state.operator + this.state.currentNumber
+      let answer = eval(expression)
+      prevAnswers.push(answer)
+      localStorage.setItem('previousAnswers', JSON.stringify(prevAnswers))
+      this.setState({
+      currentNumber:answer
+    })
+  }
+  }
+    
 /* 
  !if enter is pressed, fetch what is in state, evaluate it & set state to answer
  !arrow up or arrow down is pressed, display previous answers.
 */
 
 handleChange = (event)=>{
- const {name,value} = event.target
- numbers.push(value)
+  const {name,value} = event.target
   this.setState({
   [name]:value
   })
 }
   
  handleKey = (event)=>{
-  const {name} = event.target
-  if (event.keyCode === 13 ){
-   this.setState(prevState=>{
-   const userexpression = prevState.input
-   let answer = eval(userexpression)
-   numbers = []
-   prevAnswers.push(answer)
-   localStorage.setItem('previousAnswers', JSON.stringify(prevAnswers))
-   return{
-   [name]:answer
-   }
-  })
- }
-
- if(event.keyCode === 38){
-  this.setState(prevState=>{
-  if (prevState.index === 0){
-   return {
-   input:prevAnswers[prevAnswers.length - 1],
-   index: prevAnswers.length - 1
-   }
-  }else{
-   return{
-   input:prevAnswers[prevState.index - 1],
-   index:prevState.index - 1
-   }
- }
- })
-}
-
-if(event.keyCode === 40){
- this.setState(prevState=>{
-  if (prevState.index === prevAnswers.length - 1){
-   return {
-    input:prevAnswers[0],
-    index: 0
-   }
-  }else{
-   return{
-   input:prevAnswers[prevState.index + 1],
-   index:prevState.index + 1
+    const {name} = event.target
+    if (event.keyCode === 13 ){
+      this.setState(function(prevState){
+        const userexpression = prevState.currentNumber
+        let answer = eval(userexpression)
+        prevAnswers.push(answer)
+        return{
+          [name]:answer
+        }
+      })
+    }
+    
+    if(event.keyCode === 38){
+      this.setState(function(prevState){
+        if (prevState.index === 0){
+          return {
+            currentNumber:prevAnswers[prevAnswers.length - 1],
+            index: prevAnswers.length - 1
+          }
+      }else{
+        return{
+          currentNumber:prevAnswers[prevState.index - 1],
+          index:prevState.index - 1
+        }
+      }
+      })
+    }
+    
+    if(event.keyCode === 40){
+      this.setState(function(prevState){
+        if (prevState.index === prevAnswers.length - 1){
+          return {
+            currentNumber:prevAnswers[0],
+            index: 0
+          }
+      }else{
+        return{
+          currentNumber:prevAnswers[prevState.index + 1],
+          index:prevState.index + 1
+        }
+      }
+      })
+    }
   }
- }
-})
-}
-}
+  
 
   render(){
     let BtnData = data.map(item=>
@@ -158,11 +171,11 @@ class ScreenComponent extends MainContent{
       <>
       <input 
         type='text'
-        value={this.props.state.input}
-        name='input'
+        value={this.props.state.currentNumber}
+        name='currentNumber'
         onChange={this.props.handleChange}
         onKeyUp={this.props.handleKey}
-       />
+      />
       </>
     )
   }
