@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import MainContent from './main'
+import MainContent from './Components/main'
 
 
 function App(){
