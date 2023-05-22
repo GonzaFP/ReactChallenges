@@ -17,16 +17,16 @@ input{
 }
 
 .btn{
- display:table-cell;
- border: 1px solid rgba(211,211,211,.5);
- width: 60px;
- height: 60px;
- text-align: center;
- color: black;
- vertical-align: middle;
- font-weight: bold;
- font-size: 15px;
- background-color:cadetblue ;
+display:table-cell;
+border: 1px solid rgba(211,211,211,.5);
+width: 60px;
+height: 60px;
+text-align: center;
+color: black;
+vertical-align: middle;
+font-weight: bold;
+font-size: 15px;
+background-color:cadetblue ;
 }
 
 .lastBtn{
