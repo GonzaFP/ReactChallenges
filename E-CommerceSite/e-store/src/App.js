@@ -1,54 +1,30 @@
-import React, {Component} from 'react'
-import Header from './Components/Header';
-import SideBar from './Components/sidebar';
-import { fetcher } from './fetcher';
-import './App.css';
-
-class App extends Component{
-  constructor(){
-    super()
-    this.state={
-      categories:{
-        errorMessage:'',
-        data:[]
-      },
-      products:{
-        errorMessage:'',
-        data:[]
-      }
-    }
-  }
-
-  componentDidMount(){
-    const fetchData = async ()=>{
-      const responseData = await fetcher('categories')
-      this.setState({
-        categories:{
-          errorMessage:responseData.errorMessage,
-          data:responseData.data
-        }
-      })
-    }
-    fetchData()
-  }
-
-  handleProducts = async (id)=>{
-    const ProductData = await fetcher(`products?catId=${id}`)
-    this.setState({
-      products:{
-        errorMessage:ProductData.errorMessage,
-        data:ProductData.data
-      }
-    })
-  }
-  render(){
-    return(
-      <>
-      <Header/>
-      <SideBar products = {this.state.products} categories={this.state.categories} onClick={this.handleProducts}/>
-      </>
-    )
-  }
+import React from 'react'
+import SharedLayout from './SharedLayout';
+import ProductDetails from './Components/productdetails';
+import Products from './Components/products';
+import CategoryProducts from './Components/CategoryProducts';
+import Home from './Components/Home'
+import Basket from './Components/Basket';
+import {
+  BrowserRouter,
+  Routes,
+  Route
 }
+from 'react-router-dom'
 
+function App(){
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SharedLayout />}>
+          <Route index element={<Home/>}/>
+          <Route path='basket' element={<Basket/>}/>
+          <Route path='products' element={<Products/>}/>
+          <Route path='category/:categoryId' element={<CategoryProducts/>}/>
+          <Route path='products/:productId' element={<ProductDetails/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
+}
 export default App;

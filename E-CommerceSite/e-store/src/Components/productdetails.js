@@ -1,12 +1,21 @@
 import React,{useState,useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import { fetcher } from '../fetcher'
-
+import 
+{
+  ProductContainer,
+  ProductTitle,
+  ProductContent,
+  ProductImage,
+  ProductInfo,
+  ShoppingButtons,
+  DeliveryInfo,
+  ProductDescription
+} from './Styles/productStyles'
 
 function ProductDetails(){
- const [productData,setProductData] = useState({errorMessage:'', data:{}})
- const [imageSrc, setImageSrc] = useState(null)
- const {productId} = useParams()
+  const [productData,setProductData] = useState({errorMessage:'', data:{}})
+  const {productId} = useParams()
 
 useEffect(()=>{
     const fetchProduct = async ()=>{
@@ -16,50 +25,46 @@ useEffect(()=>{
   fetchProduct()
 },[productId])
 
-const loadImage = (imageName)=> {
-  import (`../assets/${imageName}`)
-        .then(image=>{
-          setImageSrc(image.default)
-        })
+const CreateMarkUp = () =>{
+  return {__html:productData.data?.description}
 }
-
-   const {title,image,description,specs,features,stock,price} = productData.data
-   let featuresData = features?.map((item,index)=><li key={index}>{item}</li>)
-   loadImage(image)
- return(
-  <div className='productArea'>
-      <h3>{title}</h3>
-      <div className='mainArea'>
-      <img src={imageSrc} alt='' className='grid'/>
-
-      <div className='grid'>
-        <h4>Dimensions</h4>
-        <p>{specs?.dimensions}</p>
-        {features && 
-            <>
-            <h4>Features</h4>
-            <ul>
-            {featuresData}
-            </ul>
-            </>
+  const {title,image,specs,features,stock,price} = productData.data
+  let featuresData = features?.map((item,index)=><li key={index}>{item}</li>)
+return(
+    <ProductContainer>
+      <ProductTitle>
+        <h3>{title}</h3>
+      </ProductTitle>
+      
+      <ProductContent>
+        <ProductImage src={`..//assets/${image}`} alt=''/>
+        <ProductInfo>
+          <h4>Dimensions</h4>
+          <p id='dimension'>{specs?.dimensions}</p>
+            {features && 
+              <div>
+              <h4>Features</h4>
+              <ul id='features'>
+              {featuresData}
+              </ul>
+              </div>
           }
-        </div>
+        </ProductInfo>
 
-        <div className='grid'>
-        <h3>&pound; {price}</h3>
-        <div className='shopBtns'>
-        <div className='deliver'>
-          <p>{`Stock Level: ${stock}`}</p>
-          <p>Free Delivery.</p>
-        </div>
-        <button>Add to Basket</button>
-        </div>
-        </div>
-     </div>
-     <p>{description}</p>
-    </div>
- )
+        <ProductInfo>
+          <h3>&pound; {price}</h3>
+          <ShoppingButtons>
+            <DeliveryInfo>
+              <p>{`Stock Level: ${stock}`}</p>
+              <p>Free Delivery.</p>
+            </DeliveryInfo>
+            <button>Add to Basket</button>
+          </ShoppingButtons>
+        </ProductInfo>
+
+      </ProductContent>
+      <ProductDescription dangerouslySetInnerHTML={CreateMarkUp()}></ProductDescription>
+    </ProductContainer>
+)
 }
-  
-  
- export default ProductDetails
+export default ProductDetails

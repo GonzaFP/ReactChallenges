@@ -3,6 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import './index.css'
+import {
+  StyledHeader,
+  SearchProduct,
+  StoreName 
+} from './Styles/HeaderStyles'
 
 class Header extends Component{
   constructor(){
@@ -13,16 +18,18 @@ class Header extends Component{
   }
   render(){
     return(
-  <div className="topnav">
+  <StyledHeader>
     <FontAwesomeIcon icon={faHouse} id="house"/>
-    <div id="search">
+
+    <SearchProduct>
       <label >
         Search <input type="text"  name="query"/>
       </label>
-      </div>
-    <h3 id="store">Our Store</h3>
+      </SearchProduct>
+
+    <StoreName>Our Store</StoreName>
     <FontAwesomeIcon id="cart" icon={faShoppingCart}/>
-  </div>
+  </StyledHeader>
   )
   }
 }
