@@ -1,7 +1,6 @@
-import React, {Component} from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse } from '@fortawesome/free-solid-svg-icons'
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import { FaShoppingCart,FaHome} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import './index.css'
 import {
   StyledHeader,
@@ -9,17 +8,12 @@ import {
   StoreName 
 } from './Styles/HeaderStyles'
 
-class Header extends Component{
-  constructor(){
-  super()
-  this.state={
-    query:''
-  }
-  }
-  render(){
-    return(
+
+function Header(){
+  const navigate = useNavigate()
+  return(
   <StyledHeader>
-    <FontAwesomeIcon icon={faHouse} id="house"/>
+    <FaHome id='house' onClick={()=>navigate('/')}/>
 
     <SearchProduct>
       <label >
@@ -28,10 +22,8 @@ class Header extends Component{
       </SearchProduct>
 
     <StoreName>Our Store</StoreName>
-    <FontAwesomeIcon id="cart" icon={faShoppingCart}/>
+    <FaShoppingCart id="cart" onClick={()=>navigate('/basket')}/>
   </StyledHeader>
   )
-  }
 }
-
 export default Header

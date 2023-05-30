@@ -5,6 +5,7 @@ import Products from './Components/products';
 import CategoryProducts from './Components/CategoryProducts';
 import Home from './Components/Home'
 import Basket from './Components/Basket';
+import CheckOut from './Components/CheckOut';
 import {
   BrowserRouter,
   Routes,
@@ -22,6 +23,7 @@ function App(){
           <Route path='products' element={<Products/>}/>
           <Route path='category/:categoryId' element={<CategoryProducts/>}/>
           <Route path='products/:productId' element={<ProductDetails/>}/>
+          <Route path='checkout' element={<CheckOut/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

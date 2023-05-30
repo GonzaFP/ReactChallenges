@@ -1,6 +1,7 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { fetcher } from '../fetcher'
+import DispatchContext from '../Contexts/dispatchContext'
 import 
 {
   ProductContainer,
@@ -16,6 +17,7 @@ import
 function ProductDetails(){
   const [productData,setProductData] = useState({errorMessage:'', data:{}})
   const {productId} = useParams()
+  const dispatch = useContext(DispatchContext)
 
 useEffect(()=>{
     const fetchProduct = async ()=>{
@@ -23,12 +25,13 @@ useEffect(()=>{
     setProductData(ProductData)
   }
   fetchProduct()
+  
 },[productId])
 
 const CreateMarkUp = () =>{
   return {__html:productData.data?.description}
 }
-  const {title,image,specs,features,stock,price} = productData.data
+  const {id,title,image,specs,features,stock,price} = productData.data
   let featuresData = features?.map((item,index)=><li key={index}>{item}</li>)
 return(
     <ProductContainer>
@@ -58,7 +61,9 @@ return(
               <p>{`Stock Level: ${stock}`}</p>
               <p>Free Delivery.</p>
             </DeliveryInfo>
-            <button>Add to Basket</button>
+            <button onClick={()=>{
+              dispatch({type:'AddToBasket', value:{productId:id, payLoad:{id,title,qty:1,price}}})
+            }}>Add to Basket</button>
           </ShoppingButtons>
         </ProductInfo>
 

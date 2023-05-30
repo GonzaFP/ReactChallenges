@@ -5,7 +5,7 @@ import Products from "./products";
 
 
 function CategoryProducts(){
- const [categoryProducts,setCategoryProducts] = useState({errorMessage:'', data:[]})
+  const [categoryProducts,setCategoryProducts] = useState({errorMessage:'', data:[]})
   const {categoryId} = useParams()
 
 useEffect(()=>{
@@ -25,9 +25,9 @@ let productdata  =
               })
 
 return(
- <>
+  <>
   {productdata}
- </>
+  </>
 )
 }
 
