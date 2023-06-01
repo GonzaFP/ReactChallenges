@@ -5,9 +5,9 @@ export const StyledHeader = styled.div`
   color: white;
   display: flex;
 
-   input{
-   outline: none;
-   width: 120px;
+  input{
+  outline: none;
+  width: 120px;
   }
 `
 export const SearchProduct = styled.div`

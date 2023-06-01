@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import CartContext from '../Contexts/cartContext'
 import {BasketAndCheckout, StyledButton,PricingInfo,ProductDetails,ProductDetailContainer,QuantityArea,ChangeQuantity,Total} from './Styles/BasketStyles'
 import { Link,useNavigate } from 'react-router-dom'
@@ -19,6 +19,9 @@ function Basket(){
       cartItems.length > 0 && navigate('/checkout')
     }
 
+    useEffect(()=>{
+      dispatch({type:'getStoredItems'})
+    },[dispatch])
   return(
   <div>
     <BasketAndCheckout>

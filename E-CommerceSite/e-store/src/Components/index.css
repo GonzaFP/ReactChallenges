@@ -35,3 +35,11 @@ a{
   text-decoration: none;
   color:darkslategrey;
 }
+
+.hide{
+  display: none;
+}
+.show{
+  display: show;
+  color:red
+}

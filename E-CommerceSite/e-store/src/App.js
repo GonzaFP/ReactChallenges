@@ -6,12 +6,14 @@ import CategoryProducts from './Components/CategoryProducts';
 import Home from './Components/Home'
 import Basket from './Components/Basket';
 import CheckOut from './Components/CheckOut';
+import ConfirmedOrder from './Components/ConfirmedOrder';
 import {
   BrowserRouter,
   Routes,
   Route
 }
 from 'react-router-dom'
+import SearchResults from './Components/SearchResults';
 
 function App(){
   return(
@@ -24,6 +26,8 @@ function App(){
           <Route path='category/:categoryId' element={<CategoryProducts/>}/>
           <Route path='products/:productId' element={<ProductDetails/>}/>
           <Route path='checkout' element={<CheckOut/>}/>
+          <Route path='confirmedorder' element={<ConfirmedOrder/>}/>
+          <Route path='search' element={<SearchResults/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
