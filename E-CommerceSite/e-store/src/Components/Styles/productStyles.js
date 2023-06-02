@@ -4,22 +4,23 @@ export const ProductContainer = styled.div`
   color: darkcyan;
   margin-top: 25px;
   margin-left: 10px;
+  grid-area: main;
 `
 export const ProductTitle = styled.div`
- font-weight:bold;
- font-size:15px;
- padding-left:10px
+  font-weight:bold;
+  font-size:15px;
+  padding-left:10px
 `
 export const ProductImage = styled.img`
- img{
-  width: 50%;
- }
+  img{
+    width: 70%;
+  }
 `
 
 export const ProductContent = styled.div`
   display: grid;
-  grid-template-columns: repeat(3,1fr);
-  column-gap: 20px;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 20px;
   margin-top: 50px;
 `
 export const ProductInfo = styled.div`

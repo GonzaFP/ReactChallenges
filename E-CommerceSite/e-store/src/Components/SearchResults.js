@@ -1,13 +1,18 @@
+
+/*
+  !sends an API call to fetch the user's search query.
+  !passes the data to Products component.
+*/
 import React, {useState,useEffect}from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Products from './products'
 import { fetcher } from '../fetcher'
 
 function SearchResults(){
- const [searchParams] = useSearchParams()
- const [searchProducts,setSearchProducts] = useState({errorMessage:'', data:[]})
- const query = searchParams.get('s')
- useEffect(()=>{
+  const [searchParams] = useSearchParams()
+  const [searchProducts,setSearchProducts] = useState({errorMessage:'', data:[]})
+  const query = searchParams.get('s')
+  useEffect(()=>{
     const fetchProduct = async ()=>{
     const ProductData = await fetcher(`products?q=${query}`)
     setSearchProducts(ProductData)
@@ -24,12 +29,12 @@ let productdata  =
               productInfo={product}/>
               }):<p>No results found.</p>
 
- return(
+  return(
   <>
-   <h3>Search Results</h3>
-   {productdata}
+    <h3>Search Results</h3>
+    {productdata}
   </>
- )
+  )
 }
 
 export default SearchResults

@@ -1,3 +1,7 @@
+/*
+  !component displays items in the cart.
+*/
+
 import React, {useContext, useEffect} from 'react'
 import CartContext from '../Contexts/cartContext'
 import {BasketAndCheckout, StyledButton,PricingInfo,ProductDetails,ProductDetailContainer,QuantityArea,ChangeQuantity,Total} from './Styles/BasketStyles'
@@ -65,6 +69,7 @@ function Basket(){
     )
     }) :<h4>No products in the cart.</h4>}
   </ProductDetailContainer>
+  
   <Total>
     <StyledButton onClick={()=>{
       dispatch({type:'ClearCart'})

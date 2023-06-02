@@ -27,14 +27,42 @@ function CheckOut(){
   const [formState, setFormState] = useState({
     Name:'',
     Email:'',
-    shippingAddress:''
+    shippingAddress1:'',
+    shippingAddress2:'',
+    shippingAddress3:'',
+    billingAddress1:'',
+    billingAddress2:'',
+    billingAddress3:'',
+    checked:false
   })
   const namePattern = /[a-zA-z]+/
-  const emailPattern = /^([\w]+)\@[a-zA-Z]+(\.[a-zA-Z]+)?\.[a-zA-z]{2,3}$/
+  const emailPattern = /^([\w]+)@[a-zA-Z]+(\.[a-zA-Z]+)?\.[a-zA-z]{2,3}$/
   const validName = namePattern.test(formState.Name)
   const validEmail = emailPattern.test(formState.Email)
+
   const handleChange = (event)=>{
-    const {name,value} = event.target
+    const {name,value,type} = event.target
+    if (type === 'checkbox'){
+      formState.checked? setFormState(prevState=>{
+        return{
+          ...prevState,
+          shippingAddress1:'',
+          shippingAddress2:'',
+          shippingAddress3:'',
+          checked:false
+        }
+      }):
+      setFormState(prevState=>{
+        return{
+          ...prevState,
+          checked:true,
+          shippingAddress1:prevState.billingAddress1,
+          shippingAddress2:prevState.billingAddress2,
+          shippingAddress3:prevState.billingAddress3
+        }
+      })
+      
+    }
     setFormState(prevState=>{
       return{
         ...prevState,
@@ -43,40 +71,47 @@ function CheckOut(){
     })
   }
 
-  const displayError = (name,value,blankMessage,valid, invalidMessage)=>{
-    if (value === ''){
+  const handleError = (formField,empty,Error,Valid,inValid)=>{
+    if (formField.trim() === ''){
+      debugger
       setErrorMessage(prevState=>{
-        return {
+        return{
           ...prevState,
-          [name]:blankMessage
+          [Error]:empty
         }
       })
-    }else{
-      if (!valid){
+    }
+    else{
+      if (!Valid){
         setErrorMessage(prevState=>{
-        return {
-          ...prevState,
-          [name]:invalidMessage
-        }
-      })
+          return{
+            ...prevState,
+            [Error]: inValid
+          }
+        })
       }else{
         setErrorMessage(prevState=>{
-        return {
-          ...prevState,
-          [name]:''
-        }
-      })
+          return{
+            ...prevState,
+            [Error]:''
+          }
+        })
       }
     }
   }
+
   const handleSubmit = (event)=>{
+    let emptyMessage = 'This field cannot be empty.'
     event.preventDefault()
-    displayError(errorMessage.Name,formState.Name, 'This field cannot be empty', validName,'Name must consist of only letters.')
-    displayError(errorMessage.Email,formState.Email, 'This field cannot be empty', validEmail,'Please enter a valid email.')
-    displayError(errorMessage.shippingAddress,formState.shippingAddress, 'This field cannot be empty')
+    handleError(formState.Name, emptyMessage,'Name',validName,'Name should consist of only letters.')
+    handleError(formState.Email, emptyMessage,'Email',validEmail,'Please enter a valid email.')
+    handleError(formState.shippingAddress1, emptyMessage, 'shippingAddress')
+    if (validName && validEmail && formState.shippingAddress1.trim() !== ''){
+      navigate('/confirmedorder')
+    }
   }
 
-  return(
+  return( 
   <form onSubmit={handleSubmit}>
   <CheckOutTitle>Shopping CheckOut</CheckOutTitle>
     <CheckOutDetails>
@@ -86,19 +121,15 @@ function CheckOut(){
 
       <StyledInputContainer>
         <div>
-        <label>Name</label>
-        </div>
-        <div>
+        <label>Name <span>*</span></label>
         <StyledInput type='text' placeholder="Enter Name" name='Name' value={formState.Name} onChange={handleChange}/>
         <p className="show">{errorMessage.Name}</p>
         </div>
 
         <div>
-        <label>Email</label>
-        </div>
-        <div>
+        <label>Email <span>*</span></label>
         <StyledInput type='text' placeholder="Enter Email" name="Email" value={formState.Email} onChange={handleChange}/>
-        <p>{errorMessage.Email}</p>
+        <p className="show">{errorMessage.Email}</p>
         </div>
 
         </StyledInputContainer>
@@ -109,35 +140,40 @@ function CheckOut(){
       <HorizontalRule/>
       <StyledCheckBox>
       <label id="check">
-        Copy to shipping<input type='checkbox'/>
+        Copy to shipping<input type='checkbox' onChange={handleChange}/>
       </label>
       </StyledCheckBox>
 
       <StyledInputContainer>
-      <StyledLabel>
+      <div>
+      <div>
+        <StyledLabel>
         <label>Billing Address</label>
       </StyledLabel>
-      <div>
-      <div>
-        <StyledInput type='text' placeholder="Enter billing address"/>
+        <StyledInput type='text' placeholder="Enter billing address" name="billingAddress1" 
+        value={formState.billingAddress1}
+        onChange={handleChange}/>
       </div>
       <SecondaryInput>
-      <StyledInput type='text'/>
-      <StyledInput type='text'/>
+      <StyledInput type='text' name="billingAddress2" value={formState.billingAddress2} onChange={handleChange}/>
+      <StyledInput type='text' name="billingAddress3" 
+        value={formState.billingAddress3}
+        onChange={handleChange}/>
       </SecondaryInput>
       </div>
 
-      <StyledLabel>
-        <label>Shipping Address</label>
+      
+      <div>
+      <div>
+        <StyledLabel>
+        <label>Shipping Address <span>*</span></label>
       </StyledLabel>
-      <div>
-      <div>
-        <StyledInput type='text' placeholder="Enter first shipping address" name="shippingAddress" value={formState.shippingAddress} onChange={handleChange}/>
-        <p>{errorMessage.shippingAddress}</p>
+        <StyledInput type='text' placeholder="Enter first shipping address" name="shippingAddress1" value={formState.shippingAddress1} onChange={handleChange}/>
+        <p className="show">{errorMessage.shippingAddress}</p>
       </div>
       <SecondaryInput>
-      <StyledInput type='text'/>
-      <StyledInput type='text'/>
+      <StyledInput type='text' name="shippingAddress2" value={formState.shippingAddress2} onChange={handleChange}/>
+      <StyledInput type='text' name="shippingAddress3" value={formState.shippingAddress3} onChange={handleChange}/>
       </SecondaryInput>
       </div>
 

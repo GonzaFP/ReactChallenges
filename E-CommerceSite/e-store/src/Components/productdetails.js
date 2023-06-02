@@ -1,3 +1,7 @@
+/*
+  !component displays more info about a product.  
+*/
+
 import React,{useState,useEffect,useContext} from 'react'
 import { useParams } from 'react-router-dom'
 import { fetcher } from '../fetcher'

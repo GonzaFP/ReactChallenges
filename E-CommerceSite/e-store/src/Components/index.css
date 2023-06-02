@@ -10,14 +10,15 @@ body{
   position: relative;
 }
 
-#house{
-  margin: 10px;
-  font-size: 1.5em;
+
+#house {
+  font-size: 2em;
+  margin-top: 10px;
 }
 
-#cart{
-  margin: 10px 10px 10px 600px;
-  font-size: 1.2em;
+#cart {
+  font-size: 1.5em;
+  margin-top: 10px;
 }
 
 img{
@@ -36,10 +37,23 @@ a{
   color:darkslategrey;
 }
 
-.hide{
-  display: none;
-}
+
 .show{
-  display: show;
+  font-size: 15px;
   color:red
+}
+
+span{
+  color:red;
+}
+
+@media screen and (min-width:800px){
+  .layout {
+      display: grid;
+      grid-template-columns: 0.25fr 2.5fr;
+      grid-template-areas:
+        "header header"
+        "sidebar main"
+        "footer footer"
+    }
 }
