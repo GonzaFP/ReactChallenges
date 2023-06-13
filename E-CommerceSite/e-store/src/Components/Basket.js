@@ -40,7 +40,7 @@ function Basket(){
     </PricingInfo>
 
     <ProductDetailContainer>
-    {cartItems.length !== 0?  cartItems.map(item=>{
+    {cartItems.length > 0?  cartItems.map(item=>{
     const {id,title,price,qty} = item
     const TotalPrice = qty * price
     return(

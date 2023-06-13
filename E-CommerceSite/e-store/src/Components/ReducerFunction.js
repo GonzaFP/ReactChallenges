@@ -18,7 +18,7 @@ function ReducerFunction(state,action){
       const foundItem = state.cartItems.some(item=>item.id === action.value.productId)
       if (!foundItem){
         localStorage.setItem('State', JSON.stringify({...state,
-         cartItems: [...state.cartItems,action.value.payLoad]}))
+        cartItems: [...state.cartItems,action.value.payLoad]}))
 
         return {
           ...state,
@@ -62,7 +62,7 @@ function ReducerFunction(state,action){
 
     case 'DeleteItem':
       localStorage.setItem('State', JSON.stringify({...state,
-       cartItems:state.cartItems.filter(item=> item.id !== action.value)}))
+        cartItems:state.cartItems.filter(item=> item.id !== action.value)}))
       return {
         ...state,
         cartItems:state.cartItems.filter(item=> item.id !== action.value)
